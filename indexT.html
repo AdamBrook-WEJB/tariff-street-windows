@@ -335,7 +335,7 @@ function renderApt(app, apt){
   const c = counts(items);
   setHeader(`${apt} · ${items[0].type}`, `Level ${String(lv).padStart(2,'0')} · ${c.done+c.issue} of ${c.total} items dealt with`, true);
   let html = pendingBanner();
-  html += `<div class="hint" style="margin:0 0 10px">Take a photo of each finished repair, then tap <b>Done</b>. If you can't do one, tap <b>Can't complete</b> and say why.</div>`;
+  html += `<div class="hint" style="margin:0 0 10px">Take a photo of each finished repair (or pick one already on your phone), then tap <b>Done</b>. If you can't do one, tap <b>Can't complete</b> and say why.</div>`;
   items.forEach(it => {
     const st = itemState(it.ref);
     const locked = !!st.locked;
@@ -359,7 +359,8 @@ function renderApt(app, apt){
     // photos
     html += `<div class="thumbs" id="thumbs-${it.ref}">`;
     (st.photos||[]).forEach(p => { html += `<div class="thumb" data-id="${p.id}"><img alt="photo"><button onclick="removePhoto(${it.ref},'${p.id}')" aria-label="Remove photo">×</button><div class="tag">${esc(p.kind||'after')}</div></div>`; });
-    html += `<label class="addphoto"><span>📷</span>Add photo<input type="file" accept="image/*" capture="environment" multiple class="sr" onchange="addPhotos(${it.ref}, this)"></label></div>`;
+    html += `<label class="addphoto"><span>📷</span>Take photo<input type="file" accept="image/*" capture="environment" class="sr" onchange="addPhotos(${it.ref}, this)"></label>
+      <label class="addphoto"><span>🖼</span>From gallery<input type="file" accept="image/*" multiple class="sr" onchange="addPhotos(${it.ref}, this)"></label></div>`;
     // note
     html += `<label class="field" for="note-${it.ref}">What you did (optional)</label>
       <input type="text" id="note-${it.ref}" placeholder="e.g. scratches polished out and touched in" value="${esc(st.note||'')}" oninput="setNote(${it.ref}, this.value)">`;
